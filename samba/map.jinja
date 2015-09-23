@@ -14,7 +14,10 @@
     },
     'RedHat': {
         'server': 'samba',
-        'client': 'samba',
+        'client': salt['grains.filter_by']({
+          'CentOS': 'samba-client',
+          'default': 'samba',
+        }, grain=os),
         'service': 'smb',
         'config': '/etc/samba/smb.conf',
         'config_src': 'salt://samba/files/smb.conf',
@@ -23,4 +26,4 @@
     'Ubuntu': {
         'service': 'smbd',
     },
-}, grain='os', merge=salt['pillar.get']('samba:lookup'))) %}
+}, grain='os_family', merge=salt['pillar.get']('samba:lookup'))) %}
